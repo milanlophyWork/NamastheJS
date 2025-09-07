@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JavaScript Lecture</title>
+    </head>
+
+    <body>
+        <h3>JavaScript</h3>
+
+        <p>JavaScript is a synchronous single threaded language. Synchronous implies orderly executed and single threaded implies it runs only one command at a time. Everything in javascript happens inside an
+            execution context. An execution context has 2 components : </p>
+
+            <p> * Memory Component</p>
+            <p> * Code Component</p>
+        
+        <p>Memory component is also called variable environment. It is the place where all fns and variables are stored as key-value pairs (creation phase). Code component is called thread of execution. It is 
+        the place where code is executed line by line (Execution phase). On running JavaScript an execution context is created.</p>
+
+        <b>Call Stack</b> is a stack that stores the execution context. Execution contexts are popped one by one from call stack after finishing the execution of each.
+        
+        <p><b>Hoisting in var</b> enables accessing of fns and variables even before initializing it. Variables return undefined as in creation phase undefined is stored for variables. 
+            For fns, fn body is stored. If fns are stored in a variable (arrow fns also) they return undefined as they are considered as variables. </p>
+
+            <p>Global space : Anything at top level(ie anyhting that is not inside fn) is at global space. On running a Js pgm a window is created and a this variable. Window is a global obj 
+                created along with global execution context. "This" points to the window object. At global level this === window. Anything created inside global space get attached to window object.
+            </p>
+
+        <p>Undefined and not defined :</p>
+
+        Undefined is like a placeholder that holds memory space for a variable until a value is assigned to it. 'Undefined' reserve memory for a variable where as 'not defined' implies variable has not been allocated in memory.
+
+        <p><b>Scope Chain</b></p>
+
+        Scope in Js is directly related to lexical environment. Lexical env is created whenever an exec ctxt is created. Lexical env is the local m/y + the lexical env of its parent. Scope is
+            the area where you could access a fn or var in our code. Whole chain of lexical analysis is cld scope chain. Scope chain defines whether a var or fn is present inside a scope. 
+        
+
+        <p><b>Hoisting in Let and Const</b></p>
+
+        Let and const also perform hoisting but in a different way. They are in temporal dead zone until initialized. Memory allocation is done (=> hoisting is done) in a separate memory space outside 
+        global obj(so not attached to window obj) which allow access only after initialization. 
+        
+        <p>Time zone b/w hoisting and initialization is temporal dead zone. Accessing something in temoparal dead zone gives refernce error as it has no reference in memory.</p>
+
+        <p>const is same as let. Stored in separate memory space but const won't allow assignment later. If it does a syntax error is returned because here synatx is incomplete.</p>
+
+        <em>Priority of usage : 1. const 2. let 3. var </em> 
+            
+        <p>NOTE : To avoid temporal dead zones always put declarations and initializations on top of the scope.</p>
+        
+        <b>Block Scope</b>
+
+        <p>Block is also called compound statement. It combines multiple JS statements into a group using curly braces. This group of statements can be used in places where Js expects one. </p>
+
+        <a href="shadowing.html">JS part 2</a>
+        <p><a href="eventLoop.html">JS part 3</a></p>
+        <p><a href="fnalPgmming.html">JS part 4</a></p>
+    </body>
+</html>

@@ -141,7 +141,7 @@ document.body.appendChild(p)
 function a() { //phase 1=> global_exec_ctxt|| m/y| a: {...}, num2: undefined LE->null  code|   //phase2=> global_exec_ctxt|| m/y| a{...}, num2:20   code| num2=20, // a()~ exec_ctxt phase1=> m/y| num1:undefined, b:{...} LE->gec code|  a()~2ndphase=> m/y| num1:10,   code| num1=10, 
                 // b()~exec_ctxt phase1=> m/y| LE->a()  code| console num1(checks num1 in m/y, if not found checks in LE, parent is a() checks there and find num1 console 10), console num2 (same process find num2 in gec console 20) clears b() , clears a(), 
                 //after cleared this is left::  phase2=> global_exec_ctxt|| m/y| a{...}, num2:20  LE->null   code| console num1 (checks m/y not found then checks LE but it points to null so return not defined error)
-    var num1=10//LE->null => lexical env points to null
+    var num1=10
     b()
     function b(){
         console.log(num1)// num1 in parent fn can be accessed by child fn
@@ -191,6 +191,7 @@ console.log('To avoid temporal dead zones always put declarations and initializa
 console.log('Block Scope...')
 
 /*
+
 //Block is also cld compound statement. It combines multiple Js statements into a group using curly braces. This group of statements can be used in places where JS expects one
 
 if(true) console.log('Hi') 
@@ -254,7 +255,7 @@ function fn(){
 }
 fn()
 console.log(a) // return 100// global a shadows local a (fnscope a)
-console.log(b) // return 100// global b shadows local b (fnscope b)
+console.log(b) // return 200// global b shadows local b (fnscope b)
 console.log(c) // return 300// global c shadows local c (fnscope c)
 */
 console.log('Illegal Shadowing:')
@@ -379,7 +380,7 @@ z()  */
 console.log('solution using var itself:')
 
 /*
-function x(){//can be solved if each we are able to store each i in new m/y space at each iteration.
+function x(){//can be solved if we are able to store each i in new m/y space at each iteration.
     for(var i=1; i<=5; i++){
         function close(x){//so enclose setTimeout in close fn and is given a parameter x which stores each i in new m/y space
             setTimeout(function (){
@@ -452,7 +453,7 @@ function counterWrap(){
 var counter =  new counterWrap()
 counter.incrementCounter()
 counter.decrementCounter()
-8?
+*/
 
 console.log('Closures and garbage collector')
 /*
@@ -460,7 +461,7 @@ console.log('Closures and garbage collector')
 //garbage collector is a pgm in browser or js engine that freeze up unused memory by taking out unused variables
 
 const p2= document.createElement('p')
-p2.textContent= 'If inner fn returned, use parent variables they are not garbage collected instead forms into closure (b is formed into closure with x as it is used). Parent variables not used are garbage collected and freezed (z is garbage collected).'
+p2.textContent= 'If inner fn returned, used parent variables are not garbage collected instead forms into closure (b is formed into closure with x as it is used). Parent variables not used are garbage collected and freezed (z is garbage collected).'
 document.body.appendChild(p2)
 
 function a() {
@@ -483,7 +484,7 @@ console.log('1) fn statement:')  // or fn declaration  (a way to create fn)
 
 document.body.appendChild(p3)
 
-a()// a can be called as hoisted to top so return 'a called'
+a()// a can be called as hoisted to top so displays 'a called'
 function a(){
     console.log('a called')
 }
@@ -568,7 +569,7 @@ x(function y(){// y is passed to x and hence y is cld callback fn
     console.log('inside y')
 })//after 5s callback in setTimeout is executed (again placed in callstack) exec_ctxt phase 1||  m/y|  code|   phase2=>  m/y|  code| console('timer')  clears setTimeout 
 
-// callstack also cld mainthread, everything executed in page is executed through the callstack only. if anything blocks callstack=> blocking the mainthread suppose x is a long fn and takes time if callback hasn't used it will block call stack Always avoid callstack blocking so use callback fns in such cases for asyncronous behaviour(syn=> orderly executed, async=> executes by not waiting for anything)
+// callstack also cld mainthread, everything executed in page is executed through the callstack only. if anything blocks callstack=> blocking the mainthread suppose x is a long fn and takes time if callback hasn't used it will block call stack. Always avoid callstack blocking so use callback fns in such cases for asyncronous behaviour(syn=> orderly executed, async=> executes by not waiting for anything)
 */
 
 console.log('Event listeners...')
@@ -607,7 +608,7 @@ console.log('Event Loop...')
 //Browser has JS engine in it, JS engine has callstack in it where code execution performs. We need web API's to access Browser's localstorage, timer(using web API setTimeout()), url, webpage/ ui, bluetooth, location, to access external servers(using fetch()) etc. DOM API's give access to dom trees ie what we could write document.getE..., console(Browser API) allows us to log something to console bar, localstorage, location(Browser api) gives access to local storage, location respectively
 // Browser wraps all API's to window (global obj) and gives access of window to this callstack / JS engine . So these can be used in JS ie all API's are plugged to our code via window .
 
-//NOTE: on calling settimeout, it registers the callback fn in web API env and delay time is set to timer in browser. as soon as timer expires callback fn is put inside callback queue. event loop (acts as gatekeeper) checks callback queue and puts callback fns to callstack. callstack executes it
+//NOTE: on calling settimeout, it registers the callback fn in web API env and delay time is set to timer in browser. As soon as timer expires callback fn is put inside callback queue. event loop (acts as gatekeeper) checks callback queue and puts callback fns to callstack. callstack executes it
 
 console.log('Start') // call_stack| gec run 611 to 616 and pop gec =>  call_stack| 
 document.getElementById('clickMe')// document.getElementById.addEventListener() is dom API. document.getele..byid call dom API and it search for id clickMe and returns it (dom=> Document Object Model)

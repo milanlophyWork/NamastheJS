@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Js Part 3</title>
+    </head>
+
+    <body>
+        <b>Event Loop</b>
+
+        <p>Browser has JS engine in it, JS engine has callstack in it where code execution performs. We need web API's to access Browser's localStorage, timer(using web API setTimeout()), url, webpage/ ui, bluetooth,
+        location, to access external servers (using fetch()) etc. </p>
+        
+        <p>DOM API's give access to dom trees ie what we could write document.getEle.., console (a Browser API) allows us to log something to console bar, localStorage,
+        location (a browser API) gives access to local storage & location respectively.</p>
+
+        <p>On calling setTimeout, it registers the callback fn in web API env and delay time is set to timer in browser. As soon as timer expires callback fn is put inside callback queue.
+            Event loop (acts as gatekeeper) checks callback queue and puts callback fns to callstack. Callstack executes it.
+        </p>
+
+        <em>Callback queue</em>
+
+        <p>Consider btn.addEventListener('click', function cb() {....}) . When btn is clicked cb() is pushed to callback queue and event loop puts it to callstack and hence callback queue is empty now. 
+            cb() is executed then and popped after execution.</p>
+        
+        <p> ie callback queue lines up all callback fns(suppose btn clicked no of times). Without callback queue all callbacks try to run at once in unpredictable order, which may crash JS midway</p>
+
+        <b>Microtask Queue & Callback Queue</b>
+
+        <p>There are 2 queues : claaback queue/ task queue and microtask queue. Callback queue stores all callback fns. Microtask queue stores "callback fns come through promises" and mutation observer (ie cb fns executed due to mutation in dom tree). </p>
+        <p>Microtask queue has high priority than callback queue. Consider two cb fns.</p>
+            <p>1. setTimeout with callback fn cbT </p> <p>2. fetch with callback fn cbF</p>
+        
+            setTimeout registers cbT in web API env and attach its timer. fetch (a web API used to make network calls) goes and request an API call. It returns a promise. fetch also registers cbF to web API env.
+            Once promise is resolved (ie data is fetched) the cb fn will be executed.
+
+            <p>cbF waits for data to be fetched and cbT waits for timer to expire. Meanwhile JS moves to next line. Once data is fetched cbF is ready for execution and hence pushed to microtask queue. After timer 
+                expires cbT is moved to callback queue.
+            </p>
+
+            <p>Event loop checks if callstack is empty. If it does, cbF is pushed first and executed as microtask queue has high priority. So microtask and callstack is empty now.
+                Then cbT is pushed to callstack and executed. Now callstack and callback queue are empty.
+            </p>
+
+        <p> Note : <em>Starvation of call back queue</em> Situation where callback queue won't get chance to execute as microtask has many callbacks pending.</p>
+
+        <b>JS Engine Architeture</b>
+
+        <p>Js runtime env has everything required to run JavaScript. Js engine, APIs (to connect to outer env), event loop, callback queue, microtask queue, etc are inside JS runtime env.
+            JS runtime env is present in all browsers hence we could run js in them. Js engine is the most imp part of js runtime env.
+        </p>
+
+        <p>Eg: for js engine include chakra (used in microsoft edge), spiderMonkey in firefox (1st Js engine), v8 (in chrome, node.js, deno). Js engine should follow ECMAScript language standards.
+            WE can create our own Js engine (if needed) following these stds. Js engine is not a machine but a pgm written in low level lang.
+        </p>
+
+        <b>Js engine</b>
+
+        <p>There are interpreted languges and compiled languges. Interpreted languages has interpreter for execution. Interpreter takes a pgm and execute it line by line
+        (It is fast as no need to wait for compilation). </p>
+        
+        <p>Compiled language has compiler which compiles whole pgm first to an optimized code which is then executed (it is efficient). JS can behave as interpreted lang as well as compiled lang.
+            It is decided based on chosen JS engine whether it is interpreted or it is just in time (jit) compile (ie use both). </p>
+            
+            <p> First Js developed was interpreted lang as it was only meant for browsers, and browsers won't wait for code compilation.</p>
+        
+            <em><b>Working :</b></em>
+
+            <p>Inside Js engine , code undergoes 3 steps: code ~> parsing ~~(ast)~~> compilation ~~(bytecode)~~> execution. </p>
+
+            Code is broken into tokens and syntax parser convert code into AST (abstract syntax tree). AST is passed to interpreter and it convert this high level code to bytecode with help of compiler.
+            <p>Execution requires mamory heap and callstack to perform. At compilation step, interpreter takes help from compiler to optimize the codde and develop bytecode. ie compiler compiles as much as it
+            can, at the same time when interpreter execute line by line so called just in time compilation (ie at run time itself so browser no need to wait).</p> Generated bytecode is passed to execution step.
+            Some Js engine has AOT compilation (ahead of time) in which compiler compiles a piece of code that is going to be executed later (previuos one ie jit compile code along with interpreter)
+
+            <p>Optimizations compiler perform for the code includes inlining, copy elision, inline caching, etc. Memory heap is where all variables and fns are assigned memory. Garbage collector tries to free
+                up memory space whenever possible (using nark and sweep algorithm)</p>
+                
+            <p> NOTE : In V8 JS engine interpreter is named ignition, compiler is turbofan (it is called optimizing compiler), garbage collector is orinoco and oilpan</p>
+
+        <b> Trust issues in setTimeout...</b>
+
+        <p>setTimeout(cb fn, delay time) doesn't guarentees that it will wait exactly for specified delay time. But it guarentees that it will wait for atleast delay time. 
+            Suppose we have millions of code to be executed and let the delay time set expired. But it won't execute the cb fn, until gec is popped from callstack. After these
+            millions of code are executed gec is popped and cb fn is executed. 
+        </p>
+
+        <p>Even if we set delay time as zero, setTimeout works only after gec is popped from the callstack. setTimeout is called with delay time zero in cases such as cb fn is 
+            less important than rest of the code or we want to display it last not at that time, etc.
+        </p>
+    </body>
+</html>

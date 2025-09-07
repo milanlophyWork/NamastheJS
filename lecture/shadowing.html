@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Js Part 2</title>
+    </head>
+
+    <body>
+        <b>Shadowing in Js</b>
+        <p>If we have same named variable outside the block one varible shadows another. One which is shadowed will depend on where it is called. To know which is shadowing: start from where var is used, look up the scope chain, first declared var we meet is shadowing, any same named var above it are shadowed.</p>
+
+        <b>Closures</b>
+        <p>Inner function along with its lexical scope (includes parent variable references, etc) forms a closure. Closure give access to outer fn's lexical environment from inner fn. </p>
+
+        <p>Used in :</p>
+            <p>Module design patterns, Currying in Js, Fn that runs only once, memoize, maintaining state in async world, setTimeouts, Iterators, Data hiding and encapsulation. </p>
+
+        <h4>Disadvantages of closures</h4>
+
+        <p>Over consumption of memory on creating lots of closures, variables in closures are not garbage collected, if not handled correctly can lead to memory leaks.</p>
+
+        <b>SetTimeout and closures</b>
+
+        <p>setTimer stores callback somewhere and attach timer to it. Js doesn't wait for anyone. Callback in setTimeout forms a closure which have the access to outer fn's lexical 
+            env. setTimeout takes callback fn and store it somewhere else and attach timer to it. Then js proceeds to next line. After timer set is finished take callback fn and put it
+            back to call stack and run it.</p>
+
+        <b>Closure in data hiding</b>
+
+        <p>Data hiding or data encapsulation is incapsulating data so that others cannot access it. On declaring a variable avoid declaring it globally as it is accessible by all. 
+            To ensure nobody else could modify it use closure. ie, wrap this in a fn.</p>
+
+        <b>Closures and garbage collector</b>
+
+        <p>Garbage collector is a program in browser or js engine that freeze up unused memory by taking out unused variables. Consider a fn inside another fn. If inner fn is 
+            returned, used parent fn varibales forms closure with inner fn. Unused parent variables are garbage collected and freezed.</p>
+
+        <h4>Fn statement (fn declaration) and fn expression</h4>
+
+        Both are a ways to create a function. Fn created in normal way is called fn statement/ declaration. Fn defined inside an expression is called fn expression. ie when fn is assigned
+        to a variable or passed as an argument.
+
+        <p>NOTE: Anonymous fns are fns without name. They are used when fns are used as values. ie when fns are assigned to something. Named fn expressions are fns that is given a name (ie fn exp with a name)</p>
+
+        <b>Parameters and arguments</b>
+
+        <p>Values passed inside a fn on calling are arguments, Identifiers or labels on fn declarations or fn expressions that accepts these values are parameters</p>
+
+        <b>First class fns or first class citizens</b>
+
+        <p>The ability of functions to be used as values is called first class fns. Eg: fn as value assigned to a variable, fn as a value passed as argument, fn as a value returned from another fn,
+            fn as a value stored inside an object, etc.</p>
+        
+        <h4>Callback Fn</h4>
+
+        <p>Fns passed onto another fns are callback fns. Callback fns gave access to asynchronous world. NOTE : Js is synchronous single-threaded language. Synchronous => orderly executed, Asynchronous => executes by not waiting for anything.</p>
+
+        <p>Callstack is also called main thread. Everything executed in page is executed through the callstack only. Consider a long fn. If callback is not used it will block the callstack. Always avoid callstack blocking. So use callback fns in
+            such cases for asynchronous behavoiour. (not wait for completion of long task, move to nxt line)</p>
+
+        <p>Eg : setTimeout(callback, delayTime). Callback is stored somewhere with timer attached. When timer is finished callback fn is put back to callstack and is executed.</p>
+
+        <b>EventListeners</b>
+
+        <p>It is a function in Js that waits for an event to happen (like click, keypress, form submit, etc) and then runs some code. In case of form submissions avoid default page refresh by event.preventDefault()</p>
+
+        <b>Closure along with event listener</b>
+
+        <p>EventListeners are heavy. ie it takes memory. Whenever we attach eventListeners to button or something closure is created. Even if button is not clicked for long still the memory
+            is not cleared as closure stores it. So we need to remove eventListeners if not needed afterwards. On removing variables, everything collected by closures are garbage collected
+        </p>
+
+
+    </body>
+</html>
